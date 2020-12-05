@@ -43,6 +43,7 @@ export const Index = () => {
     });
 
     const handleChange = (firstName) => (event) => {
+        console.log(event.target.value);
         setShipFromValues({...shipFromValues, [firstName]: event.target.value });
     }
 
