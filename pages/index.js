@@ -1,65 +1,84 @@
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+import React, {useState} from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import { Typography, TextField, Grid, Button } from '@material-ui/core';
 
-export default function Home() {
-  return (
-    <div className={styles.container}>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+const useStyles = makeStyles((theme) => ({
+    container: {
+        margin: 50
+    },
+    inputField: {
+        margin: 20
+    },
+    button: {
+        marginLeft: 20
+    },
+    header: {
+        marginLeft: 90,
+        marginTop: 20
+    }
+}));
 
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
+export const Index = () => {
+    const classes = useStyles();
+    const [shipFromValues, setShipFromValues] = useState({
+        firstName: '',
+        lastName: '',
+        address_line1: '',
+        city_locality: '',
+        state_province: '',
+        postal_code: '',
+        country_code: 'US',
+        address_residential_indicator: 'yes'
+    });
 
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
+    const [shipToValues, setShipToValues] = useState({
+        firstName: '',
+        lastName: '',
+        address_line1: '',
+        city_locality: '',
+        state_province: '',
+        postal_code: '',
+        country_code: 'US',
+        address_residential_indicator: 'yes'
+    });
 
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
+    const handleChange = (firstName) => (event) => {
+        setShipFromValues({...shipFromValues, [firstName]: event.target.value });
+    }
 
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
+    const shipFromFields = [
+        {label: 'First name', placeholder: 'First name', autocomplete: 'given-name', name: 'firstName'},
+        {label: 'Last name', placeholder: 'Last name', autocomplete: 'family-name', name: 'lastName'},
+        {label: 'Street address', placeholder: 'Street address', autocomplete: 'street-address', name: 'address_line1'},
+        {label: 'City', placeholder: 'City', autocomplete: 'city', name: 'city_locality'},
+        {label: 'State', placeholder: 'State', autocomplete: 'state', name: 'state_province'},
+        {label: 'Postal code', placeholder: 'Postal code', autocomplete: 'postal-code', name: 'postal_code'}
+];
+    const shipToFields = [...shipFromFields];
 
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
+    const packageFields = [];
 
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
-      </footer>
-    </div>
-  )
+    return (
+        <form noValidate autoComplete="off">
+            <Typography variant='h5' className={classes.header}>Ship from address</Typography>
+            <Grid container spacing={3} className={classes.container}>
+                {shipFromFields.map((field, index) => (
+                    <Grid item xs={4} key={index}>
+                    <TextField id="outlined-basic" label={field.label} type='text' variant="outlined" value={shipFromValues.name} className={classes.inputField} onChange={handleChange(field.name)} />
+                    </Grid>
+                ))}
+            </Grid>
+            <Typography variant='h5' className={classes.header}>Ship to address</Typography>
+            <Grid container spacing={3} className={classes.container}>
+                {shipToFields.map((field, index) => (
+                    <Grid item xs={4} key={index}>
+                    <TextField id="outlined-basic" label={field.label} variant="outlined" type='text' value={shipToValues.name} onChange={handleChange(field.name)} className={classes.inputField} />
+                    </Grid>
+                ))}
+            </Grid>
+            <Button variant='contained' color='primary' submit='submit' className={classes.button}>Create shipment</Button>
+        </form>
+    )
 }
+
+export default Index;
