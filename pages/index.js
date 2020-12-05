@@ -1,6 +1,8 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography, TextField, Grid, Button } from '@material-ui/core';
+
+import {getCarriers} from '../pages/api/shipengine-api';
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -20,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
 
 export const Index = () => {
     const classes = useStyles();
+    const [carriers, setCarriers] = useState([]);
     const [shipFromValues, setShipFromValues] = useState({
         firstName: '',
         lastName: '',
@@ -42,6 +45,17 @@ export const Index = () => {
         address_residential_indicator: 'yes'
     });
 
+    useEffect(() => {
+        let isMounted = true;
+        getCarriers().then(res => {
+            if(res.length !== 0 && isMounted) {
+                setCarriers(res);
+            }
+        });
+        return () => {isMounted = false};
+    }, []);
+
+    console.log(carriers);
     const handleChange = (firstName) => (event) => {
         console.log(event.target.value);
         setShipFromValues({...shipFromValues, [firstName]: event.target.value });
