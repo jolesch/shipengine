@@ -7,13 +7,14 @@ export const apiConfig = {
 const api = axios.create({
     baseURL: apiConfig.webAPI,
     headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
     }
 })
 
 api.interceptors.request.use(
     config => {
-        const apiKey = 'V5nfYGMs3XaYUj7k4uXeaY+ijKyV/POtHhF384H+Xa8';
+        const apiKey = 'test_key';
         if(apiKey){
             config.headers['API-Key'] = apiKey;
         }

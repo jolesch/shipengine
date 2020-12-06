@@ -48,7 +48,7 @@ export const Index = () => {
     useEffect(() => {
         let isMounted = true;
         getCarriers().then(res => {
-            if(res.length !== 0 && isMounted) {
+            if(res && isMounted) {
                 setCarriers(res);
             }
         });

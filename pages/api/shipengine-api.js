@@ -1,9 +1,10 @@
 import api from './api-config';
 
-export const getCarriers = () => {
-    return api.get('/carriers').then((res) => {
-        if(res.data !== null) {
+export const getCarriers = async () => {
+    return await api.get('/carriers').then((res) => {
             return res.data;
-        }
-    });
+        })
+        .catch((e) => {
+            console.error(e)
+        });
 }
